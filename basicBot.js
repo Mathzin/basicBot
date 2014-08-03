@@ -75,7 +75,7 @@ var retrieveFromStorage = function(){
 };
 
 var esBot = {
-        version: "1.2.1",        
+        version: "1.2.2",        
         status: false,
         name: "basicBot",
         creator: "Matthew",
@@ -506,7 +506,7 @@ var esBot = {
         },        
         eventChat: function(chat){
             for(var i = 0; i < esBot.room.users.length;i++){
-                if(esBot.room.users[i].id === chat.fromID){
+                if(esBot.room.users[i].id === chat.fid){
                         esBot.userUtilities.setLastActivity(esBot.room.users[i]);
                         if(esBot.room.users[i].username !== chat.from){
                                 esBot.room.users[i].username = chat.from;
@@ -658,7 +658,7 @@ var esBot = {
         },
         chatcleaner: function(chat){
             if(!esBot.roomSettings.filterChat) return false;
-            if(esBot.userUtilities.getPermission(chat.fromID) > 1) return false;
+            if(esBot.userUtilities.getPermission(chat.fid) > 1) return false;
             var msg = chat.message;
             var containsLetters = false;
             for(var i = 0; i < msg.length; i++){
@@ -702,49 +702,49 @@ var esBot = {
         chatUtilities: {        
             chatFilter: function(chat){
                 var msg = chat.message;
-                var perm = esBot.userUtilities.getPermission(chat.fromID);
-                var user = esBot.userUtilities.lookupUser(chat.fromID);
+                var perm = esBot.userUtilities.getPermission(chat.fid);
+                var user = esBot.userUtilities.lookupUser(chat.fid);
                 var isMuted = false;
                 for(var i = 0; i < esBot.room.mutedUsers.length; i++){
-                                if(esBot.room.mutedUsers[i] === chat.fromID) isMuted = true;
+                                if(esBot.room.mutedUsers[i] === chat.fid) isMuted = true;
                         }
                 if(isMuted){
-                    API.moderateDeleteChat(chat.chatID);
+                    API.moderateDeleteChat(chat.cid);
                     return true;
                     };
                 if(esBot.roomSettings.lockdownEnabled){
                                 if(perm === 0){    
-                                        API.moderateDeleteChat(chat.chatID);
+                                        API.moderateDeleteChat(chat.cid);
                                         return true;
                                 }
                         };
                 if(esBot.chatcleaner(chat)){
-                    API.moderateDeleteChat(chat.chatID);
+                    API.moderateDeleteChat(chat.cid);
                     return true;
                 }
                 var plugRoomLinkPatt, sender;
                     plugRoomLinkPatt = /(\bhttps?:\/\/(www.)?plug\.dj[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
                     if (plugRoomLinkPatt.exec(msg)) {
-                      sender = API.getUser(chat.fromID);
+                      sender = API.getUser(chat.fid);
                       if (perm === 0) {                                                              
                               API.sendChat("/me @" + chat.from + ", don't post links to other rooms please.");
-                              API.moderateDeleteChat(chat.chatID);
+                              API.moderateDeleteChat(chat.cid);
                               return true;
                       }
                     }
                 if(msg.indexOf('http://adf.ly/') > -1){
-                    API.moderateDeleteChat(chat.chatID);
+                    API.moderateDeleteChat(chat.cid);
                     API.sendChat('/me @' + chat.from + ', please change your autowoot program. We suggest PlugCubed: http://plugcubed.net/');
                     return true;
                 }                    
                 if(msg.indexOf('autojoin was not enabled') > 0 || msg.indexOf('AFK message was not enabled') > 0 || msg.indexOf('!afkdisable') > 0 || msg.indexOf('!joindisable') > 0 || msg.indexOf('autojoin disabled') > 0 || msg.indexOf('AFK message disabled') > 0){ 
-                    API.moderateDeleteChat(chat.chatID);
+                    API.moderateDeleteChat(chat.cid);
                     return true;
                 }
-                if((msg.indexOf("joined the roulette") > -1 || msg.indexOf("left the roulette") > -1) && chat.fromID === esBot.loggedInID){
+                if((msg.indexOf("joined the roulette") > -1 || msg.indexOf("left the roulette") > -1) && chat.fid === esBot.loggedInID){
                     setTimeout(function(id){
                         API.moderateDeleteChat(id);
-                    }, 2*1000, chat.chatID);
+                    }, 2*1000, chat.cid);
                     return true;
                 }                       
             return false;                        
@@ -759,16 +759,16 @@ var esBot = {
                         else cmd = chat.message.substring(0,space);
                 }
                 else return false;
-                var userPerm = esBot.userUtilities.getPermission(chat.fromID);
+                var userPerm = esBot.userUtilities.getPermission(chat.fid);
                 if(chat.message !== "!join" && chat.message !== "!leave"){                            
                     if(userPerm === 0 && !esBot.room.usercommand) return void (0);
                     if(!esBot.room.allcommand) return void (0);
                 }                            
                 if(chat.message === '!eta' && esBot.roomSettings.etaRestriction){
                     if(userPerm < 2){
-                        var u = esBot.userUtilities.lookupUser(chat.fromID);
+                        var u = esBot.userUtilities.lookupUser(chat.fid);
                         if(u.lastEta !== null && (Date.now() - u.lastEta) < 1*60*60*1000){
-                            API.moderateDeleteChat(chat.chatID);
+                            API.moderateDeleteChat(chat.cid);
                             return void (0);
                         }
                         else u.lastEta = Date.now();
@@ -849,17 +849,17 @@ var esBot = {
                     setTimeout(function(){ esBot.room.usercommand = true; }, esBot.roomSettings.commandCooldown * 1000);                               
                 }
                 if(executed){
-                    API.moderateDeleteChat(chat.chatID);
+                    API.moderateDeleteChat(chat.cid);
                     esBot.room.allcommand = false;
                     setTimeout(function(){ esBot.room.allcommand = true; }, 5 * 1000);
                 }
                 return executed;                                
             },                        
             action: function(chat){
-                var user = esBot.userUtilities.lookupUser(chat.fromID);                        
+                var user = esBot.userUtilities.lookupUser(chat.fid);                        
                 if (chat.type === 'message') {
                     for(var j = 0; j < esBot.room.users.length;j++){
-                        if(esBot.userUtilities.getUser(esBot.room.users[j]).id === chat.fromID){
+                        if(esBot.userUtilities.getUser(esBot.room.users[j]).id === chat.fid){
                             esBot.userUtilities.setLastActivity(esBot.room.users[j]);
                         }
                     
@@ -1022,7 +1022,7 @@ var esBot = {
         },                        
         commands: {        
             executable: function(minRank, chat){
-                var id = chat.fromID;
+                var id = chat.fid;
                 var perm = esBot.userUtilities.getPermission(id);
                 var minPerm;
                 switch(minRank){
@@ -1267,7 +1267,7 @@ var esBot = {
                                         }
                                     else{ 
                                         if(!esBot.roomSettings.bouncerPlus){
-                                            var id = chat.fromID;
+                                            var id = chat.fid;
                                             var perm = esBot.userUtilities.getPermission(id);
                                             if(perm > 2){
                                                 esBot.roomSettings.bouncerPlus = true;
@@ -1435,7 +1435,7 @@ var esBot = {
                                     if(msg.length === cmd.length) name = chat.from;
                                     else{ 
                                         name = msg.substring(cmd.length + 2);
-                                        var perm = esBot.userUtilities.getPermission(chat.fromID);
+                                        var perm = esBot.userUtilities.getPermission(chat.fid);
                                         if(perm < 2) return API.sendChat('/me [@' + chat.from + '] Only bouncers and above can do !dclookup for others.');
                                     }    
                                     var user = esBot.userUtilities.lookupUserName(name);
@@ -1498,7 +1498,7 @@ var esBot = {
                                 if(this.type === 'exact' && chat.message.length !== cmd.length) return void (0);
                                 if( !esBot.commands.executable(this.rank, chat) ) return void (0);
                                 else{
-                                    var perm = esBot.userUtilities.getPermission(chat.fromID);
+                                    var perm = esBot.userUtilities.getPermission(chat.fid);
                                     var msg = chat.message;
                                     var name;
                                     if(msg.length > cmd.length){
@@ -1569,8 +1569,8 @@ var esBot = {
                                 if(this.type === 'exact' && chat.message.length !== cmd.length) return void (0);
                                 if( !esBot.commands.executable(this.rank, chat) ) return void (0);
                                 else{
-                                    if(esBot.room.roulette.rouletteStatus && esBot.room.roulette.participants.indexOf(chat.fromID) < 0){
-                                        esBot.room.roulette.participants.push(chat.fromID);
+                                    if(esBot.room.roulette.rouletteStatus && esBot.room.roulette.participants.indexOf(chat.fid) < 0){
+                                        esBot.room.roulette.participants.push(chat.fid);
                                         API.sendChat("/me @" + chat.from + " joined the roulette! (!leave if you regret it.)");
                                     }
                                 };                              
@@ -1621,7 +1621,7 @@ var esBot = {
                                     var from = chat.from;
                                     if(typeof user === 'boolean') return API.sendChat('/me [@' + chat.from + '] No valid user specified.');
 
-                                    var permFrom = esBot.userUtilities.getPermission(chat.fromID);
+                                    var permFrom = esBot.userUtilities.getPermission(chat.fid);
                                     var permTokick = esBot.userUtilities.getPermission(user.id);
 
                                     if(permFrom <= permTokick)
@@ -1667,7 +1667,7 @@ var esBot = {
                                 if(this.type === 'exact' && chat.message.length !== cmd.length) return void (0);
                                 if( !esBot.commands.executable(this.rank, chat) ) return void (0);
                                 else{
-                                    var ind = esBot.room.roulette.participants.indexOf(chat.fromID);
+                                    var ind = esBot.room.roulette.participants.indexOf(chat.fid);
                                     if(ind > -1){
                                         esBot.room.roulette.participants.splice(ind, 1);
                                         API.sendChat("/me @" + chat.from + " left the roulette!");
@@ -1685,11 +1685,11 @@ var esBot = {
                                 else{
                                     var media = API.getMedia();
                                     var from = chat.from;
-                                    var user = esBot.userUtilities.lookupUser(chat.fromID);
-                                    var perm = esBot.userUtilities.getPermission(chat.fromID);
+                                    var user = esBot.userUtilities.lookupUser(chat.fid);
+                                    var perm = esBot.userUtilities.getPermission(chat.fid);
                                     var dj = API.getDJ().id;
                                     var isDj = false;
-                                    if (dj === chat.fromID) isDj = true;
+                                    if (dj === chat.fid) isDj = true;
                                     if(perm >= 1 || isDj){
                                         if(media.format === '1'){
                                             var linkToSong = "https://www.youtube.com/watch?v=" + media.cid;
@@ -1963,7 +1963,7 @@ var esBot = {
                                     var from = chat.from;
                                     var user = esBot.userUtilities.lookupUserName(name);
                                     if(typeof user === 'boolean') return API.sendChat('/me [@' + chat.from + '] Invalid user specified.');
-                                    var permFrom = esBot.userUtilities.getPermission(chat.fromID);
+                                    var permFrom = esBot.userUtilities.getPermission(chat.fid);
                                     var permUser = esBot.userUtilities.getPermission(user.id);
                                     if(permFrom > permUser){
                                         esBot.room.mutedUsers.push(user.id);
@@ -2414,7 +2414,7 @@ var esBot = {
                                 if( !esBot.commands.executable(this.rank, chat) ) return void (0);
                                 else{
                                     var msg = chat.message;
-                                    var permFrom = esBot.userUtilities.getPermission(chat.fromID);
+                                    var permFrom = esBot.userUtilities.getPermission(chat.fid);
                                       
                                     if(msg.indexOf('@') === -1 && msg.indexOf('all') !== -1){
                                         if(permFrom > 2){

@@ -75,7 +75,7 @@ var retrieveFromStorage = function(){
 };
 
 var esBot = {
-        version: "1.2.2",        
+        version: "1.2.3",        
         status: false,
         name: "basicBot",
         creator: "Matthew",
@@ -827,7 +827,7 @@ var esBot = {
                     case '!rules':              esBot.commands.rulesCommand.functionality(chat, '!rules');                          executed = true; break;
                     case '!sessionstats':       esBot.commands.sessionstatsCommand.functionality(chat, '!sessionstats');            executed = true; break;
                     case '!skip':               esBot.commands.skipCommand.functionality(chat, '!skip');                            executed = true; break;
-                    case '!slap':               esBot.commands.slapCommand.functionality(chat, '!slap'); executed = true; break;    executed = true; break;
+                    case '!slap':               esBot.commands.slapCommand.functionality(chat, '!slap');                            executed = true; break;
                     case '!status':             esBot.commands.statusCommand.functionality(chat, '!status');                        executed = true; break;
                     case '!swap':               esBot.commands.swapCommand.functionality(chat, '!swap');                            executed = true; break;
                     case '!theme':              esBot.commands.themeCommand.functionality(chat, '!theme');                          executed = true; break;

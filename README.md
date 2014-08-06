@@ -1,6 +1,13 @@
 basicBot
 ========
 
+IMPORTANT
+---------
+
+__basicBot is currently being updated to work under plug's update from Wednesday, August 6th. Please check back here later to see if it is available again.
+Please disable any scripts/extensions which have not been updated by their creators yet, as they may cause issues with the new plug. More info:__
+http://blog.plug.dj/2014/07/message-to-those-using-extensions-or-bots/
+
 Usage
 -----
 

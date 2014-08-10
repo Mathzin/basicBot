@@ -1,4 +1,5 @@
 {
+    "botName": "basicBot",
     "maximumAfk": 120,
     "afkRemoval": true,                
     "maximumDc": 60,                                
@@ -38,5 +39,6 @@
     "website": null,
     "intervalMessages": [],
     "messageInterval": 5,
-    "songstats": true
+    "songstats": true,
+    "commandLiteral": "!"
 }

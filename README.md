@@ -4,21 +4,28 @@ basicBot
 IMPORTANT
 ---------
 
-__basicBot is currently being updated to work under plug's update from Wednesday, August 6th. Please check back here later to see if it is available again.
-Please disable any scripts/extensions which have not been updated by their creators yet, as they may cause issues with the new plug. More info:__
-http://blog.plug.dj/2014/07/message-to-those-using-extensions-or-bots/
+__basicBot has been updated to work under plug's update. There may still be bugs and functionality is not guaranteed.__
 
-__Also make sure to update your bookmark, as the link has changed recently!!!__
+__Make sure to update your bookmark, as the link has changed recently!!!__
+
+__Important changes in version 2.x.x:__
+
+- Now should be fully compatible with Firefox.
+- You can now change the bot's name, no need to make a fork to change it anymore. Available under custom settings as "botName".
+- The bot's variable is now exposed outside of the script. You can access it as the variable "bot" in the console. This should allow for secondary scripts extending the bot without the need to fork and lose support on its basis.
+Be careful when extending it to make sure commands or features interact properly with the rest of them.
+An example script to extend the bot is provided under exampleExtension.js. Please do not fork this repository to just change that file. Details of how to use are provided inside.
+This is NOT needed to run the bot as it is provided, only if you want to add functionality.
+- Command checking has been reworked to facilitate adding commands through secondary scripts as explained above.
 
 Usage
 -----
 
-Chrome is advised to run the bot.
 Bookmark the following code. To run the bot, run the bookmark.
 
-javascript:$.getScript('https://rawgit.com/Yemasthui/basicBot/master/basicBot.js');
+javascript:(function(){$.getScript('https://rawgit.com/Yemasthui/basicBot/master/basicBot.js');})();
 
-If this does not work, go to https://raw.githubusercontent.com/Yemasthui/basicBot/master/basicBot.js and copy paste its content into your console (accessible in chrome by pressing f12) when on plug.dj in your room.
+If this does not work, go to https://raw.githubusercontent.com/Yemasthui/basicBot/master/basicBot.js and copy paste its content into your console (accessible in chrome by pressing f12) when on plug.dj in your community.
 
 ###Special settings###
 

@@ -33,6 +33,7 @@ Try to keep numbers integers: no decimals.
 Strings go between " ", if you want to use " in your string, use \". 
 Booleans are either 'true' or 'false', without the '.
 
+- "botName": self-explanatory, type: string
 - "maximumAfk": the amount of minutes a user can be afk for the afkCheck if it's enabled, type: a number
 - "afkRemoval": turn afkCheck on or off, type: boolean             
 - "maximumDc": users that disconnected not longer than this amount of minutes ago, can get their spot back, type: a number 
@@ -75,3 +76,4 @@ Booleans are either 'true' or 'false', without the '.
 	["message 1", "message 2", "message 3"]
 - "messageInterval": the interval X for the standard messages, type: a number
 - "songstats": toggle message with statistics for the previous song, type: boolean
+- "commandLiteral": symbol before commands, eg. "!", type: string

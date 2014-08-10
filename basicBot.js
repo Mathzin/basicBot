@@ -9,7 +9,7 @@
 
     var msg = "basicBot is currently under maintenance to work under plug's new update, please try again later.";
 
-    if(typeof API !== "undefined" && typeof API.chatLog === "function"){
+    if(API && typeof API.chatLog === "function"){
         API.chatLog(msg)
     }
     console.warn(msg)

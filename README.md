@@ -8,8 +8,6 @@ __basicBot is currently being updated to work under plug's update from Wednesday
 Please disable any scripts/extensions which have not been updated by their creators yet, as they may cause issues with the new plug. More info:__
 http://blog.plug.dj/2014/07/message-to-those-using-extensions-or-bots/
 
-__Also make sure to update your bookmark, as the link has changed recently!!!__
-
 Usage
 -----
 

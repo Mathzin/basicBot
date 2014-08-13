@@ -54,13 +54,14 @@
         }
         var json_sett = null;
         var roominfo = document.getElementById("room-info");
-        var info = roominfo.innerText;
+        info = roominfo.innerText;
         var ref_bot = "@basicBot=";
         var ind_ref = info.indexOf(ref_bot);
         if (ind_ref > 0) {
             var link = info.substring(ind_ref + ref_bot.length, info.length);
-            if (link.indexOf(" ") < link.indexOf("\n")) var ind_space = link.indexOf(" ");
-            else var ind_space = link.indexOf("\n");
+            var ind_space = null;
+            if (link.indexOf(" ") < link.indexOf("\n")) ind_space = link.indexOf(" ");
+            else ind_space = link.indexOf("\n");
             link = link.substring(0, ind_space);
             $.get(link, function (json) {
                 if (json !== null && typeof json !== "undefined") {
@@ -529,7 +530,6 @@
                 if (esBot.roomSettings.motdEnabled) interval = esBot.roomSettings.motdInterval;
                 else interval = esBot.roomSettings.messageInterval;
                 if ((esBot.room.roomstats.songCount % interval) === 0 && esBot.status) {
-                    API.sendChat("/me Plug will be down for maintenance on !!Wednesday!!, August 6th. Please read https://docs.google.com/document/d/1Qvbb7j1AmC0mvd_OJo-li02JvuQjVTGpcK2XgWPusok/edit for more info.");
                     var msg;
                     if (esBot.roomSettings.motdEnabled) {
                         msg = esBot.roomSettings.motd;
@@ -1067,7 +1067,7 @@
 
             },
             /**
-             commandCommand: {
+             command: {
                         command: 'cmd',
                         rank: 'user/bouncer/mod/manager',
                         type: 'startsWith/exact',
@@ -1277,7 +1277,6 @@
                         var name = msg.substr(cmd.length + 2);
                         var user = esBot.userUtilities.lookupUserName(name);
                         if (typeof user === 'boolean') return API.sendChat('/me [@' + chat.un + '] Invalid user specified.');
-                        //API.sendChat('/me [' + chat.un + ' whips out the banhammer :hammer:]');
                         API.moderateBanUser(user.id, 1, API.BAN.DAY);
                     }
                 }

@@ -1,5 +1,5 @@
 {
-    "maximumAfk": 120,
+    "maximumAfk": 40,
     "afkRemoval": true,                
     "maximumDc": 60,                                
     "bouncerPlus": true,                
@@ -14,13 +14,13 @@
     "commandCooldown": 30,
     "usercommandsEnabled": true,                
     "lockskipPosition": 3,
-    "lockskipReasons": [ ["theme", "This song does not fit the room theme. "], 
-            ["op", "This song is on the OP list. "], 
-            ["history", "This song is in the history. "], 
-            ["mix", "You played a mix, which is against the rules. "], 
-            ["sound", "The song you played had bad sound quality or no sound. "],
-            ["nsfw", "The song you contained was NSFW (image or sound). "], 
-            ["unavailable", "The song you played was not available for some users. "] 
+    "lockskipReasons": [ ["theme", "Cette musique ne correspond pas au thème de la salle. "], 
+            ["op", "Cette musique a trop été jouée. "], 
+            ["history", "Cette musique est toujours dans l'historique. "], 
+            ["mix", "Vous avez joué un mix, ce qui est interdit. "], 
+            ["sound", "La musique que vous avez joué avait une mauvaise qualité audio. "],
+            ["nsfw", "La musique que vous avez joué contenait des images ou du son NSFW. "], 
+            ["unavailable", "La musique que vous avez joué n'était pas disponible pour certains utilisateurs. "] 
         ],
     "afkpositionCheck": 15,
     "afkRankCheck": "ambassador",                

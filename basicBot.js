@@ -99,7 +99,7 @@ var esBot = {
             usercommandsEnabled: true,                
             lockskipPosition: 3,
             lockskipReasons: [ ["theme", "Cette musique ne correspond pas au thème de la salle "], 
-                    ["op", "This song is on the OP list. "], 
+                    ["op", "Cette musique a trop été jouée "], 
                     ["history", "This song is in the history. "], 
                     ["mix", "You played a mix, which is against the rules. "], 
                     ["sound", "The song you played had bad sound quality or no sound. "],
